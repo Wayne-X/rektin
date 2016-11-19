@@ -14,7 +14,7 @@ automate mass emailing to employees of any company
 ![In gmail, go to settings](https://github.com/Wayne-X/rektin/blob/master/img/allow1.PNG?raw=true)
 ![In settings, go to Accounts and import tab, and click Other Account Settings](https://github.com/Wayne-X/rektin/blob/master/img/allow1.5.PNG?raw=true)
 ![Click on the Sign in and security card](https://github.com/Wayne-X/rektin/blob/master/img/allow2.PNG?raw=true)
-![Scroll down and enable allow less secure apps](https://github.com/Wayne-X/rektin/blob/master/img/allow3.png)
+![Scroll down and enable allow less secure apps](https://github.com/Wayne-X/rektin/blob/master/img/allow3.PNG?raw=true)
 
 #### Usage:
 ```sh
