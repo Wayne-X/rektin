@@ -2,16 +2,10 @@
 automate mass emailing to employees of any company
 
 Installation:
- 
     git clone https://github.com/Wayne-X/rektin.git
-    3rd Party Python libraries may be required:
-    pip install beautifulsoup4
-    pip install bs4
-    pip install lxml
+    cd rektin
+	sudo setup.sh
 
 Usage:
-
-    cd rektin
     python linkscrape.py -e YourLinkedInEmail -c CompanyName -d DomainName
-
-The result is the data.pkl
+    ex:	python linkscrape.py -e ian_dev@gmail.com -c Belvedere -d belvederetrading.com

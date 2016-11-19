@@ -3,6 +3,11 @@
 # Nick Sanzotta
 # Description: Enumerates employee names from LinkedIn.com based off company search results.
 # Version v 1.9222016
+
+# pip install beautifulsoup4
+# pip install bs4
+# pip install lxml
+
 import os, sys, getopt, getpass, re, requests, time
 import pickle
 from sys import argv
@@ -18,7 +23,6 @@ class colors:
    blue = "\033[1;34m"
    green = "\033[1;32m"
    lightblue = "\033[0;34m"
-
 
 def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -60,11 +64,9 @@ def connection(email, password, companyName, pageResults, timeout, result):
 
     cls()
 
-
 def mangleOne(first_name, last_name, companyName, formatValue, domain):
     newname=first_name + last_name
     newname = newname+"@"+domain
-
     return newname
 
 def mangleTwo(first_name, last_name, companyName, formatValue, domain):
@@ -77,7 +79,6 @@ def mangleThree(first_name, last_name, companyName, formatValue, domain):
     newname = newname+"@"+domain
     return newname
 
-
 def mangleFour(first_name, last_name, companyName, formatValue, domain):
     newname = last_name + "." + first_name
     newname = newname+"@"+domain
@@ -85,64 +86,51 @@ def mangleFour(first_name, last_name, companyName, formatValue, domain):
 
 def mangleFive(first_name, last_name, companyName, formatValue, domain):
     newname = first_name + "_" + last_name
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
 
 def mangleSix(first_name, last_name, companyName, formatValue, domain):
     newname = last_name + "_" + first_name
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
-
 
 def mangleSeven(first_name, last_name, companyName, formatValue, domain):
     newname = first_name[0] + last_name
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
 
 def mangleEight(first_name, last_name, companyName, formatValue, domain):
     newname = last_name[0] + first_name
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
 
 def mangleNine(first_name, last_name, companyName, formatValue, domain):
     newname = first_name + last_name[0]
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
-
 
 def mangleTen(first_name, last_name, companyName, formatValue, domain):
     newname = first_name[0] + "." + last_name
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
 
 def mangleEleven(first_name, last_name, companyName, formatValue, domain):
     newname = last_name[0] + "." + first_name
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
 
 def mangleTwelve(first_name, last_name, companyName, formatValue, domain):
     newname = last_name[0:3] + first_name[0:2]
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
-
 
 def mangleThirteen(first_name, last_name, companyName, formatValue, domain):
     newname = last_name[0:4] + first_name[0:3]
-    newname = newname+"@"+domain
-    
+    newname = newname+"@"+domain    
     return newname
 
 def mangleAll(first_name, last_name, companyName, formatValue, domain):
     newname = list()
-
     newname.append(mangleOne(first_name, last_name, companyName, formatValue, domain))
     newname.append(mangleTwo(first_name, last_name, companyName, formatValue, domain))
     newname.append(mangleThree(first_name, last_name, companyName, formatValue, domain))
@@ -168,15 +156,12 @@ def name(companyName, formatValue, domain, result):
         person.append(mangleAll(first_name, last_name, companyName, formatValue, domain))
     return result
 
-
 def write(companyName, formatValue, newname):
     filename = "linkScrape-data/"+companyName+"-"+"mangle-"+str(formatValue)+"_"+timestr+".txt"
     with open(filename, 'a') as f:
         f.write(newname+"\n")
 
-
 def help():
-  
     print " Usage: python linkScrape.py <OPTIONS> \n"
     print " Example: python linkScrape.py -e LinkedInUser@email.com -c google -m 99 -d google.com\n"
     # print " Example: python linkScrape.py -m 7 -i ~/Company/names.txt\n"
@@ -226,51 +211,33 @@ def main(argv):
     if not os.path.exists("linkScrape-data/"):
         os.mkdir("linkScrape-data/")
 
-
     try:
-        opts, args = getopt.getopt(argv, 'e:c:r:t:o:m:d:i:h',['email=','company=','results=','timeout=','output=','mangle=','--domain=','--input=','help'])
+        opts, args = getopt.getopt(argv, 'e:c:d',['email=','company=','--domain='])
         #GETOPT Menu:
         for opt, arg in opts:
-            if opt in ('-h', '--help'):
-                help()
-                sys.exit(2)
-            elif opt in ('-e', '--email'):
+            if opt in ('-e', '--email'):
                 email = arg
                 password = getpass.getpass(r'Enter password: ')
             elif opt in ('-c', '--company'):
                 companyName = arg
                 output = 'linkScrape-data/'+companyName+'_'+timestr+'.txt'
-            elif opt in ('-r', '--results'):
-                pageResults = int(arg)
-                pageResults+=1
-            elif opt in ('-t', '--timeout'):
-                timeout = int(arg)
-            elif opt in ('o','--output'):
-                output = arg
-            elif opt in ('-m', '--mangle'):
-                formatValue = int(arg)
             elif opt in ('-d','--domain'):
                 domain = arg
-            elif opt in ('-i','--input'):
-                inputfile = arg
-                output = inputfile
-                name(companyName, output, formatValue, domain)
-                sys.exit(2)
             else:
                 help()
                 sys.exit(2)
         result = list()
         connection(email, password, companyName, pageResults, timeout, result)
         name(companyName, formatValue, domain, result)
+        for x in result: print x
         # print result
         print "\nCompleted in: %.1fs\n" % (time.time() - curr_time)
-        output = open('data.pkl', 'wb')
-        pickle.dump(result, output)
+        # output = open('data.pkl', 'wb')
+        # pickle.dump(result, output)
 
     except getopt.GetoptError:
         help()
         sys.exit(2)
-
 
 if __name__ == "__main__":
     main(argv[1:])
