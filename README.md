@@ -9,3 +9,9 @@ Installation:
     pip install bs4
     pip install lxml
 
+Usage:
+
+    cd rektin
+    python linkscrape.py -e YourLinkedInEmail -c CompanyName -d DomainName
+
+The result is the data.pkl

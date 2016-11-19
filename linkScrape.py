@@ -4,6 +4,7 @@
 # Description: Enumerates employee names from LinkedIn.com based off company search results.
 # Version v 1.9222016
 import os, sys, getopt, getpass, re, requests, time
+import pickle
 from sys import argv
 from bs4 import BeautifulSoup
 
@@ -263,8 +264,8 @@ def main(argv):
         name(companyName, formatValue, domain, result)
         # print result
         print "\nCompleted in: %.1fs\n" % (time.time() - curr_time)
-        return result
-        
+        output = open('data.pkl', 'wb')
+        pickle.dump(result, output)
 
     except getopt.GetoptError:
         help()
