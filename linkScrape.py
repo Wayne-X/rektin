@@ -1,17 +1,11 @@
-
 #!/usr/bin/python
-# Nick Sanzotta
-# Description: Enumerates employee names from LinkedIn.com based off company search results.
-# Version v 1.9222016
-
-# pip install beautifulsoup4
-# pip install bs4
-# pip install lxml
-
 import os, sys, getopt, getpass, re, requests, time
 import pickle
+import yagmail
+import json
 from sys import argv
 from bs4 import BeautifulSoup
+from validate_email import validate_email
 
 timestr = time.strftime("%Y%m%d-%H%M")
 curr_time = time.time()
@@ -131,6 +125,7 @@ def mangleThirteen(first_name, last_name, companyName, formatValue, domain):
 
 def mangleAll(first_name, last_name, companyName, formatValue, domain):
     newname = list()
+    newname.append("{0}@{1}").format(first_name, domain)
     newname.append(mangleOne(first_name, last_name, companyName, formatValue, domain))
     newname.append(mangleTwo(first_name, last_name, companyName, formatValue, domain))
     newname.append(mangleThree(first_name, last_name, companyName, formatValue, domain))
@@ -153,6 +148,8 @@ def name(companyName, formatValue, domain, result):
         # print person
         first_name = person[0]
         last_name = person[1]
+        first_name[0] = first_name[0].upper()
+        last_name[0] = last_name[0].upper()
         person.append(mangleAll(first_name, last_name, companyName, formatValue, domain))
     return result
 
@@ -197,8 +194,49 @@ def help():
     print "\t -h <help>\t\tPrints this help menu."
     sys.exit(2)
 
+def getFoundProfiles(people):
+    # input: list of "people"
+    # person -> ["first", "last", [list of email address strings]]
+    def getIfEmailExists(email):
+        return True == validate_email(str(email), verify=True)
+
+    res = list()
+    for person in people:
+        print "  Stalking {0} {1}".format(person[0], person[1])
+        # print person
+        for email in person[2]:
+            print "    Trying {0}".format(email)
+            if getIfEmailExists(email):
+                print "    Success! Got {0} for {1}".format(email, person[0])
+                res.append([person[0], person[1], email])
+                break
+    return res
+
+def sendEmails(people, companyName):
+    with open('email_materials/config.json') as data_file: 
+        unidata = json.load(data_file)
+
+    yag = yagmail.SMTP(str(unidata["email"]), str(unidata["password"]))
+    for first, last, email in people:
+        data = dict()
+        for k, v in unidata.items():
+            data[str(k)] = str(v)
+
+        # ugly code is great! running out of time!!!
+        data["body"] = data["body"].replace("HIPPOPOTTYPOSSUMMUST", first).replace("COMPACOMPED ", companyName).replace("HAYLEYWHATHAYLEYWHO", data["name"])
+
+        to = email
+        subject = data["subject"]
+        body = list()
+        body.append(data["body"])
+        body.append(data["rel_resume_path"])
+
+        yag.send(to = to, subject = subject, contents = body)
+
+        print "  sent email to {0} at {1}".format(first, email)
+
+
 def main(argv):
-    # print(banner)
     email= ''
     password= ''
     companyName= ''
@@ -208,12 +246,10 @@ def main(argv):
     domain = ''
     outputTitle = ''
 
-    if not os.path.exists("linkScrape-data/"):
-        os.mkdir("linkScrape-data/")
-
     try:
-        opts, args = getopt.getopt(argv, 'e:c:d',['email=','company=','--domain='])
-        #GETOPT Menu:
+        opts, args = list(getopt.getopt(argv, 'e:c:d',['email=','company=','domain=']))
+        opts[-1] = (opts[-1][0], args[0])
+
         for opt, arg in opts:
             if opt in ('-e', '--email'):
                 email = arg
@@ -227,13 +263,17 @@ def main(argv):
                 help()
                 sys.exit(2)
         result = list()
+        print "Searching for people at {0}".format(companyName)
         connection(email, password, companyName, pageResults, timeout, result)
         name(companyName, formatValue, domain, result)
-        for x in result: print x
-        # print result
-        print "\nCompleted in: %.1fs\n" % (time.time() - curr_time)
-        # output = open('data.pkl', 'wb')
-        # pickle.dump(result, output)
+        print "Found {0} people at {1}".format(len(result), companyName)
+        print "Searching for email addresses of people..."
+        result = getFoundProfiles(result)
+
+        print "Found email addresses for {0} people".format(len(result))
+        print "Sending email..."
+        sendEmails(result, companyName)
+        print "finished"
 
     except getopt.GetoptError:
         help()
