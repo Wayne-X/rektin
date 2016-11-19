@@ -1,6 +1,13 @@
 # RekIn
 automate mass emailing to employees of any company
 
+#### Motivation:
+GeekedIn leaked information about 8 million developers that was crawled from Github. Corporations have begun to mass email developers with recruitment spam.
+
+https://www.troyhunt.com/8-million-github-profiles-were-leaked-from-geekedins-mongodb-heres-how-to-see-yours/
+
+We bring you revenge. Now you can can crawl for information from LinkedIn, and mass email corporations with recruitment spam.
+
 #### Installation:
 ```sh
     git clone https://github.com/Wayne-X/rektin.git
