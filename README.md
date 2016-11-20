@@ -1,13 +1,14 @@
 # RektIn
 Fully automated recruiting growth hack: set up once, and reach recruiters' inboxes with a single command.
 
-![screenshot of code working 1](https://github.com/Wayne-X/rektin/blob/master/img/success1.PNG?raw=true)
-![screenshot of code working 2](https://github.com/Wayne-X/rektin/blob/master/img/success2.PNG?raw=true)
+![screenshot of code working 1](https://github.com/Wayne-X/rektin/blob/master/img/success1.PNG?raw=true =400)
+![screenshot of code working 2](https://github.com/Wayne-X/rektin/blob/master/img/success2.PNG?raw=true =400)
+
 *example of the code at work, these are fake names*
 
 Leverages data mining and a portion of the SMTP protocol to collect email addresses of recruiters at top companys, and automates sending emails to selected email addresses. This code is provided as-is, use at your own discretion. Go easy on the data mining part, if you query too fast your LinkedIn account might get flagged.
 
-Our submission to Wildhacks 2016
+Our submission to Wildhacks 2016: 
 [Wayne Xun](https://www.linkedin.com/in/waynexun) (CS '17), [Hayley Hu](https://www.linkedin.com/in/hayley-hu) (CS '16)
 
 #### Motivation:
@@ -44,7 +45,7 @@ Features that would be nice to have in the future
 - async queries, multiple SMTP querying workers
 - get emails mode, only get emails but does not send anything
 - user adjustable settings for linked scrape speed
-- "costco mode", imput list of companies with conservative scrape speed and run silently "always-on", email new people not seen before
+- "costco mode", input list of companies with conservative scrape speed and run silently "always-on", email new people not seen before
 
 
 
