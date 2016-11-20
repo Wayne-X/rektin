@@ -6,6 +6,7 @@ import json
 from sys import argv
 from bs4 import BeautifulSoup
 from validate_email import validate_email
+# import random
 
 timestr = time.strftime("%Y%m%d-%H%M")
 curr_time = time.time()
@@ -125,7 +126,7 @@ def mangleThirteen(first_name, last_name, companyName, formatValue, domain):
 
 def mangleAll(first_name, last_name, companyName, formatValue, domain):
     newname = list()
-    newname.append("{0}@{1}").format(first_name, domain)
+    newname.append("{0}@{1}".format(first_name, domain))
     newname.append(mangleOne(first_name, last_name, companyName, formatValue, domain))
     newname.append(mangleTwo(first_name, last_name, companyName, formatValue, domain))
     newname.append(mangleThree(first_name, last_name, companyName, formatValue, domain))
@@ -148,8 +149,8 @@ def name(companyName, formatValue, domain, result):
         # print person
         first_name = person[0]
         last_name = person[1]
-        first_name[0] = first_name[0].upper()
-        last_name[0] = last_name[0].upper()
+        first_name = first_name[0].upper() + first_name[1:]
+        last_name = last_name[0].upper() + last_name[1:]
         person.append(mangleAll(first_name, last_name, companyName, formatValue, domain))
     return result
 
@@ -198,18 +199,23 @@ def getFoundProfiles(people):
     # input: list of "people"
     # person -> ["first", "last", [list of email address strings]]
     def getIfEmailExists(email):
-        return True == validate_email(str(email), verify=True)
+        try:
+            return True == validate_email(str(email), verify=True)
+        except:
+            return False
 
     res = list()
     for person in people:
         print "  Stalking {0} {1}".format(person[0], person[1])
         # print person
-        for email in person[2]:
+        for i, email in enumerate(person[2]):
             print "    Trying {0}".format(email)
             if getIfEmailExists(email):
                 print "    Success! Got {0} for {1}".format(email, person[0])
                 res.append([person[0], person[1], email])
                 break
+            if i==(len(person[2])-1):
+                print "    Failure: could not find email for {0}".format(person[0])
     return res
 
 def sendEmails(people, companyName):
@@ -231,10 +237,10 @@ def sendEmails(people, companyName):
         body.append(data["body"])
         body.append(data["rel_resume_path"])
 
-        yag.send(to = to, subject = subject, contents = body)
+        print "EMAIL: ---------------\nto: {0}\nsubject: {1}\nbody:\n{2}".format(to, subject, body)
+        # yag.send(to = to, subject = subject, contents = body)
 
         print "  sent email to {0} at {1}".format(first, email)
-
 
 def main(argv):
     email= ''
@@ -281,3 +287,80 @@ def main(argv):
 
 if __name__ == "__main__":
     main(argv[1:])
+
+
+def sendEmails(people, companyName):
+    with open('email_materials/config.json') as data_file: 
+        unidata = json.load(data_file)
+
+    yag = yagmail.SMTP(str(unidata["email"]), str(unidata["password"]))
+    for first, last, email in people:
+        data = dict()
+        for k, v in unidata.items():
+            data[str(k)] = str(v)
+
+        # ugly code is great! running out of time!!!
+        data["body"] = data["body"].replace("HIPPOPOTTYPOSSUMMUST", first).replace("COMPACOMPED ", companyName).replace("HAYLEYWHATHAYLEYWHO", data["name"])
+
+        to = email
+        subject = data["subject"]
+        body = list()
+        body.append(data["body"])
+        body.append(data["rel_resume_path"])
+
+        print "EMAIL: ---------------\nto: {0}\nsubject: {1}\nbody:\n{2}".format(to, subject, body)
+        # yag.send(to = to, subject = subject, contents = body)
+
+        print "  sent email to {0} at {1}".format(first, email)
+
+
+
+
+# FAKE DEMO CODE
+
+
+# random.seed()
+# def getFoundProfiles(people):
+#     # input: list of "people"
+#     # person -> ["first", "last", [list of email address strings]]
+#     def getIfEmailExists(email):
+#         return (0==random.randrange(3))
+
+#     res = list()
+#     for person in people:
+#         print "  Stalking {0} {1}".format(person[0], person[1])
+#         # print person
+#         for i, email in enumerate(person[2]):
+#             print "    Trying {0}".format(email)
+#             if getIfEmailExists(email):
+#                 print "    Success! Got {0} for {1}".format(email, person[0])
+#                 res.append([person[0], person[1], email])
+#                 break
+#             if i==(len(person[2])-1):
+#                 print "    Failure: could not find email for {0}".format(person[0])
+#     return res
+
+# def sendEmails(people, companyName):
+#     for first, last, email in people:
+#         print "  sent email to {0} at {1}".format(first, email)
+
+
+# people = [["Kasi", "Mcintire"], ["Clelia", "Lazar"], ["Liliana", "Vail"], ["Susann", "Dorrough"], ["Doyle", "Saling"], ["Genevive", "Bergin"], ["Horace", "Munden"], ["Elisha", "Kleckner"], ["Ruthie", "Wyse"], ["Elouise", "Ouellette"], ["Seth", "Petillo"], ["Providencia", "Marsh"], ["Pamala", "Lord"], ["Armanda", "Gledhill"], ["Delpha", "Elkin"], ["Lucrecia", "Kay"], ["Marylin", "Scudder"], ["Hilton", "Deitz"], ["Kyoko", "Coffman"], ["Angelyn", "Millhouse"]] 
+# result = []
+# for p in people:
+#     result.append((p[0], p[1], mangleAll(p[0], p[1], "google", '', "google.com")))
+
+# companyName = "google"
+# print "Searching for people at {0}".format(companyName)
+
+# print "Found {0} people at {1}".format(len(result), companyName)
+# print "Searching for email addresses of people..."
+# result = getFoundProfiles(result)
+
+# print "Found email addresses for {0} people".format(len(result))
+# print "Sending email..."
+# sendEmails(result, companyName)
+# print "finished"
+
+
+

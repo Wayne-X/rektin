@@ -1,10 +1,17 @@
-# RekIn
-automate mass emailing to employees of any company
+# RektIn
+Fully automated recruiting growth hack: set up once, and reach recruiters' inboxes with a single command.
+
+![screenshot of code working 1](https://github.com/Wayne-X/rektin/blob/master/img/success1.PNG?raw=true)
+![screenshot of code working 2](https://github.com/Wayne-X/rektin/blob/master/img/success2.PNG?raw=true)
+*example of the code at work, these are fake names*
+
+Leverages data mining and a portion of the SMTP protocol to collect email addresses of recruiters at top companys, and automates sending emails to selected email addresses. This code is provided as-is, use at your own discretion. Go easy on the data mining part, if you query too fast your LinkedIn account might get flagged.
+
+Our submission to Wildhacks 2016
+[Wayne Xun](https://www.linkedin.com/in/waynexun) (CS '17), [Hayley Hu](https://www.linkedin.com/in/hayley-hu) (CS '16)
 
 #### Motivation:
-GeekedIn leaked information about 8 million developers that was crawled from Github. Corporations have begun to mass email developers with recruitment spam.
-
-https://www.troyhunt.com/8-million-github-profiles-were-leaked-from-geekedins-mongodb-heres-how-to-see-yours/
+GeekedIn recently leaked information on 8 million developers that was crawled from Github [(link)](https://www.troyhunt.com/8-million-github-profiles-were-leaked-from-geekedins-mongodb-heres-how-to-see-yours/). Corporations have begun to mass email developers with recruitment spam.
 
 We bring you revenge. Now you can can crawl for information from LinkedIn, and mass email corporations with recruitment spam.
 
@@ -25,9 +32,19 @@ We bring you revenge. Now you can can crawl for information from LinkedIn, and m
 
 #### Usage:
 ```sh
-    python linkscrape.py -e YourLinkedInEmail -c CompanyName -d EmailDomainName
+    python linkScrape.py -e YourLinkedInEmail -c CompanyName -d EmailDomainName
 ```
 #### Example Usage:
 ```sh
-    python linkscrape.py -e stew_dent@gmail.com -c DunderMifflin -d DunderMiffl.com
+    python linkScrape.py -e stew_dent@gmail.com -c DunderMifflin -d DunderMiffl.com
 ```
+#### Feature Queue:
+Features that would be nice to have in the future
+- more robust credentials handling: support system keychain
+- async queries, multiple SMTP querying workers
+- get emails mode, only get emails but does not send anything
+- user adjustable settings for linked scrape speed
+- "costco mode", imput list of companies with conservative scrape speed and run silently "always-on", email new people not seen before
+
+
+
