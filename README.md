@@ -7,7 +7,7 @@ Fully automated recruiting growth hack: set up once, and reach recruiters' inbox
 <i>example of the code at work, these are fake names</i>
 </p>
 
-Leverages data mining and a portion of the SMTP protocol to collect email addresses of recruiters at top companys, and automates sending emails to selected email addresses. This code is provided as-is, use at your own discretion. Go easy on the data mining part, if you query too fast your LinkedIn account might get flagged.
+Leverages data mining and a portion of the SMTP protocol to collect email addresses of recruiters at top companys. We do this by scraping LinkedIn for first/last names of people that work at that company as far as 3+ degrees of connection, and come up with a list of possible email addresses they might be using based on their name and company. Email addresses get checked silenty for occupancy using the first part of the SMTP(rotocol), and automates sending emails to discovered email addresses. This code is provided as-is, use at your own discretion. Go easy on the data mining part, if you query too fast your LinkedIn account might get flagged.
 
 Our submission to Wildhacks 2016: 
 [Wayne Xun](https://www.linkedin.com/in/waynexun) (CS '17), [Hayley Hu](https://www.linkedin.com/in/hayley-hu) (CS '16)
