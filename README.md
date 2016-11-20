@@ -3,6 +3,7 @@ Fully automated recruiting growth hack: set up once, and reach recruiters' inbox
 <p align="center">
 <img src="https://github.com/Wayne-X/rektin/blob/master/img/success1.PNG?raw=true" width="400">
 <img src="https://github.com/Wayne-X/rektin/blob/master/img/success2.PNG?raw=true" width="400">
+<br>
 
 *example of the code at work, these are fake names*
 </p>
