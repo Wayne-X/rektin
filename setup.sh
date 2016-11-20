@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 sudo apt-get install python
 sudo apt-get install python-pip
 sudo apt-get install python-lxml

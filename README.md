@@ -20,6 +20,7 @@ We bring you revenge. Now you can can crawl for information from LinkedIn, and m
 #### Installation:
 ```sh
     git clone https://github.com/Wayne-X/rektin.git
+    chmod u+x rektin/setup.sh
     sudo rektin/setup.sh
 ```
 
