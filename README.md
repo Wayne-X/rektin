@@ -4,8 +4,7 @@ Fully automated recruiting growth hack: set up once, and reach recruiters' inbox
 <img src="https://github.com/Wayne-X/rektin/blob/master/img/success1.PNG?raw=true" width="400">
 <img src="https://github.com/Wayne-X/rektin/blob/master/img/success2.PNG?raw=true" width="400">
 <br>
-
-*example of the code at work, these are fake names*
+<i>example of the code at work, these are fake names</i>
 </p>
 
 Leverages data mining and a portion of the SMTP protocol to collect email addresses of recruiters at top companys, and automates sending emails to selected email addresses. This code is provided as-is, use at your own discretion. Go easy on the data mining part, if you query too fast your LinkedIn account might get flagged.
